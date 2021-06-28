@@ -19,7 +19,6 @@
  */
 //declare(ticks=1);
 use \GatewayWorker\Lib\Gateway;
-use \Applications\YourApp\Events1;
 use \Workerman\Autoloader;
 
 /**
@@ -38,26 +37,27 @@ class Events
     public static function onConnect($client_id)
     {
         // 向当前client_id发送数据 
-        Gateway::sendToClient($client_id, "Hello $client_id\r\n");
+        //Gateway::sendToClient($client_id, "Hello $client_id\r\n");
         // 向所有人发送
-        Gateway::sendToAll("$client_id login\r\n");
+        //Gateway::sendToAll("$client_id login\r\n");
     }
     
    /**
     * 当客户端发来消息时触发
+    * 此类消息全部由各个应用转发
     * @param int $client_id 连接id
     * @param mixed $message 具体消息
     */
    public static function onMessage($client_id, $message)
    {
-        $message = json_decode($message, true);
-        var_dump($message);
-        if ($message['type'] != '') {
+
+        //$message = json_decode($message, true);
+        //if ($message['type'] != '') {
             //Events1::pp($client_id, $message);
-        }
+        //}
         // 向所有人发送 
-        Gateway::sendToAll("$client_id said $message\r\n");
-        Gateway::sendToClient($client_id, "你牛逼\r\n");
+        //Gateway::sendToAll("$client_id said $message\r\n");
+        //Gateway::sendToClient($client_id, "你牛逼\r\n");
    }
    
    /**
@@ -67,6 +67,6 @@ class Events
    public static function onClose($client_id)
    {
        // 向所有人发送 
-       GateWay::sendToAll("$client_id logout\r\n");
+       //GateWay::sendToAll("$client_id logout\r\n");
    }
 }
