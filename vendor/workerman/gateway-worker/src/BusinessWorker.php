@@ -416,7 +416,7 @@ class BusinessWorker extends Worker
                 $this->eventHandler = $messge['handler'];
                 $this->eventAction = $messge['action'];
                 \GatewayWorker\Lib\Log::setLogType(0);
-                \GatewayWorker\Lib\Log::write("[message]" . "Request = " . print_r($messge, true), Log::INFO);
+                \GatewayWorker\Lib\Log::write("[message]" . "Request = " . print_r($data['body'], true), Log::INFO);
                 if (is_callable($this->eventHandler . '::' . $this->eventAction)) {
                     \GatewayWorker\Lib\Log::setLogType(1,$this->eventHandler,$this->eventAction);
                     \GatewayWorker\Lib\Log::write("client_id:" . Context::$client_id . "连接", Log::INFO);
@@ -426,7 +426,7 @@ class BusinessWorker extends Worker
                     \GatewayWorker\Lib\Log::write("Request = " . print_r($messge['params'], true), Log::INFO);
 
                     $this->_eventOnMessage = $this->eventHandler . '::' . $this->eventAction;
-                    call_user_func($this->_eventOnMessage, Context::$client_id, $data['body']);
+                    call_user_func($this->_eventOnMessage, Context::$client_id, $messge);
 
                     \GatewayWorker\Lib\Log::write("Request = " .  print_r($messge['params'], true), Log::INFO);
                     \GatewayWorker\Lib\Log::write("===== " . "End at " . date("Y-m-d H:i:s", time()) . " =====", Log::INFO);
